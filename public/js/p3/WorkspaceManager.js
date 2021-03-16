@@ -16,7 +16,8 @@ define([
     apiUrl: '',
     userId: '',
 
-    downloadTypes: ['bam', 'bai', 'bigwig', 'biochemistry', 'contigs', 'csv',
+    downloadTypes: ['aligned_dna_fasta', 'aligned_protein_fasta', 'bam',
+      'bai', 'bigwig', 'biochemistry', 'contigs', 'csv',
       'de_novo_assembled_transcripts', 'diffexp_experiment', 'diffexp_expression',
       'diffexp_input_data', 'diffexp_input_metadata', 'diffexp_mapping',
       'diffexp_sample', 'doc', 'docx', 'embl', 'fba',
@@ -26,7 +27,7 @@ define([
       'json', 'mapping', 'media', 'model', 'modelfolder', 'model_edit',
       'modeltemplate', 'nwk', 'pdf', 'png', 'ppt', 'pptx', 'proteomics_experiment',
       'reads', 'rxnprobs', 'string', 'svg', 'tar_gz', 'tbi',
-      'transcriptomics_experiment', 'transcripts', 'txt', 'unspecified', 'vcf',
+      'transcriptomics_experiment', 'transcripts', 'tsv', 'txt', 'unspecified', 'vcf',
       'vcf_gz', 'wig', 'xls', 'xlsx', 'zip', 'contigset', 'xml'],
 
     viewableTypes: ['txt', 'html', 'json', 'csv', 'tsv', 'diffexp_experiment',
