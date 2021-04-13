@@ -5,7 +5,7 @@ define([
   'dojo/topic', 'dojo/query', 'dijit/layout/ContentPane', 'dojo/text!./templates/IDMapping.html',
   'dijit/Dialog', 'dijit/popup', 'dijit/TooltipDialog', './DownloadTooltipDialog', './PerspectiveToolTip',
   './CopyTooltipDialog', './PermissionEditor', '../WorkspaceManager', '../DataAPI', 'dojo/_base/Deferred', '../util/PathJoin',
-  './FeatureDetailsTooltipDialog'
+  './FeatureDetailsTooltipDialog', './ServicesTooltipDialog'
 ], function (
   declare, BorderContainer, on, domConstruct,
   request, when, domClass,
@@ -13,7 +13,7 @@ define([
   Topic, query, ContentPane, IDMappingTemplate,
   Dialog, popup, TooltipDialog, DownloadTooltipDialog, PerspectiveToolTipDialog,
   CopyTooltipDialog, PermissionEditor, WorkspaceManager, DataAPI, Deferred, PathJoin,
-  FeatureDetailsTooltipDialog
+  FeatureDetailsTooltipDialog, ServicesTooltipDialog
 ) {
 
   var mmc = '<div class="wsActionTooltip" rel="dna">Nucleotide</div><div class="wsActionTooltip" rel="protein">Amino Acid</div>';
@@ -1346,6 +1346,47 @@ define([
               perspectiveUrl: '/view/GenomeList/'
             }),
             around: this.selectionActionBar._actions['ViewFeatureDetails'].button,
+            orient: ['below', 'above']
+          });
+        }
+      ],
+      [
+        'Services',
+        'MultiButton fa icon-pie-chart fa-2x',
+        {
+          label: 'SERVICES',
+          validTypes: ['*'],
+          multiple: true,
+          validContainerTypes: ['genome_data'],
+          tooltip: 'View Services Menu',
+          pressAndHold: function (selection, button, opts, evt) {
+            console.log('in pressAndHold');
+            popup.open({
+              popup: new ServicesTooltipDialog({
+                perspective: 'GenomeDataDetails'
+              }),
+              around: button,
+              orient: ['below']
+            });
+          }
+        },
+        function (selection) {
+          console.log('in selection');
+          var genome_id = selection[0].genome_id;
+          var genome_name = selection[0].genome_name;
+          var selectionList = selection.map(function (sel) {
+            return sel.genome_id;
+          });
+
+          popup.open({
+            popup: new ServicesTooltipDialog({
+              genome_id: genome_id,
+              genome_name: genome_name,
+              selectionList: selectionList,
+              perspective: 'GenomeDataDetails',
+              perspectiveUrl: '/view/GenomeList/'
+            }),
+            around: this.selectionActionBar._actions['Services'].button,
             orient: ['below', 'above']
           });
         }
