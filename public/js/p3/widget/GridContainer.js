@@ -1352,11 +1352,11 @@ define([
       ],
       [
         'Services',
-        'MultiButton fa icon-pie-chart fa-2x',
+        'MultiButton fa icon-lightbulb-o fa-2x',
         {
           label: 'SERVICES',
           validTypes: ['*'],
-          multiple: true,
+          multiple: false,
           validContainerTypes: ['genome_data'],
           tooltip: 'View Services Menu',
           pressAndHold: function (selection, button, opts, evt) {
@@ -1372,17 +1372,19 @@ define([
         },
         function (selection) {
           console.log('in selection');
-          var genome_id = selection[0].genome_id;
-          var genome_name = selection[0].genome_name;
-          var selectionList = selection.map(function (sel) {
-            return sel.genome_id;
-          });
+          var genome_info = { 'name' : selection[0].genome_name, 'id' : selection[0].genome_id };
+          //var genome_id = selection[0].genome_id;
+          //var genome_name = selection[0].genome_name;
+          //var selectionList = selection.map(function (sel) {
+          //  return { 'name' : sel.genome_name, 'id' : sel.genome_id };
+          //});
 
           popup.open({
             popup: new ServicesTooltipDialog({
-              genome_id: genome_id,
-              genome_name: genome_name,
-              selectionList: selectionList,
+              //genome_id: genome_id,
+              //genome_name: genome_name,
+              //selectionList: selectionList,
+              genome_info: genome_info,
               perspective: 'GenomeDataDetails',
               perspectiveUrl: '/view/GenomeList/'
             }),

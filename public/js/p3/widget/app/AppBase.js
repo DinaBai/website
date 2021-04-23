@@ -27,6 +27,7 @@ define([
     activeUploads: [],
     // srrValidationUrl: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmax=1&db=sra&field=accn&term={0}&retmode=json',
     srrValidationUrl: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?retmax=10&db=sra&id={0}', // the data we need is in xml string no matter what.
+    appParams: null,
 
     postMixInProperties: function () {
       // use AppLogin.html when requireAuth & user is not logged in
@@ -44,6 +45,22 @@ define([
         this.templateString = LoginTemplate;
         return;
       }
+
+/*       // were parameters passed with href?  Fill appParams.
+      //if (this.state.href.indexOf('?') !== -1) {
+      if (this.state.value.indexOf('?') > -1)  {
+        var paramLine = this.state.value.substr(1);
+        var params = paramLine.split('&');
+        for (var i = 0; i < params.length; i++) {
+          if (params[i].indexOf('=') >= 0) {
+            var name = params[i].substring(0,params[i].indexOf('='));
+            var value = params[i].substring(params[i].indexOf('=') + 1);
+            this.appParams.push({'name' : name, 'value': value});
+          }
+        }
+        this.state.href = this.state.href.substring(0, this.state.href.indexOf('?'));
+        //window.location.href = window.location.href.substring(0, window.location.href.indexOf('?'));
+      } */
 
       this.activeWorkspace = this.activeWorkspace || window.App.activeWorkspace;
       this.activeWorkspacePath = this.activeWorkspacePath || window.App.activeWorkspacePath;

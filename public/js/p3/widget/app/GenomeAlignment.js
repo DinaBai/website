@@ -23,6 +23,7 @@ define([
     startingRows: 1,
 
     constructor: function () {
+      console.log ("GenomeAlignment constructor");
     },
 
     startup: function () {
@@ -66,6 +67,10 @@ define([
           this.advicon.className = 'fa icon-caret-down fa-1';
         }
       }));
+
+      if (this.appParams) {
+        this.addGenome ({name: this.appParams.name, id: this.appParams.id});
+      }
 
       this._started = true;
     },
