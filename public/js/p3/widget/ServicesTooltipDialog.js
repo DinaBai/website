@@ -2,12 +2,12 @@ define([
   'dojo/_base/declare', 'dojo/on', 'dojo/dom-construct',
   'dojo/_base/lang', 'dojo/mouse',
   'dijit/popup', 'dijit/TooltipDialog',
-  'dijit/Dialog', './app/GenomeAlignment'
+  'dijit/Dialog', './app/GenomeAlignment', '../WorkspaceManager', './app/AppBase'
 ], function (
   declare, on, domConstruct,
   lang, Mouse,
   popup, TooltipDialog,
-  Dialog, GenomeAlignment
+  Dialog, GenomeAlignment, WorkspaceManager, AppBase
 ) {
 
   return declare([TooltipDialog], {
@@ -123,6 +123,7 @@ define([
 
         var genomeAlignment = new GenomeAlignment();
         genomeAlignment.appParams = this.genome_info;
+
 
         // console.log("Selection: ", _self.selection);
         var d = new Dialog({ 

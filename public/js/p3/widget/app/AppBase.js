@@ -3,13 +3,15 @@ define([
   'dojo/dom-class', 'dijit/_TemplatedMixin', 'dijit/_WidgetsInTemplateMixin',
   'dojo/text!./templates/AppLogin.html', 'dijit/form/Form', 'p3/widget/WorkspaceObjectSelector', 'dojo/topic', 'dojo/_base/lang',
   '../../util/PathJoin', 'dojox/xml/parser',
-  'dijit/Dialog', 'dojo/request', 'dojo/dom-construct', 'dojo/query', 'dijit/TooltipDialog', 'dijit/popup', 'dijit/registry', 'dojo/dom'
+  'dijit/Dialog', 'dojo/request', 'dojo/dom-construct', 'dojo/query', 'dijit/TooltipDialog', 'dijit/popup', 'dijit/registry', 'dojo/dom',
+  '../../WorkspaceManager'
 ], function (
   declare, WidgetBase, on,
   domClass, Templated, WidgetsInTemplate,
   LoginTemplate, FormMixin, WorkspaceObjectSelector, Topic, lang,
   PathJoin, xmlParser,
-  Dialog, xhr, domConstruct, query, TooltipDialog, popup, registry, dom
+  Dialog, xhr, domConstruct, query, TooltipDialog, popup, registry, dom,
+  WorkspaceManager
 ) {
   return declare([WidgetBase, FormMixin, Templated, WidgetsInTemplate], {
     baseClass: 'App Sleep',
@@ -201,6 +203,19 @@ define([
       }
 
       this._started = true;
+    },
+
+    createOutputFolder: function() {
+      var outputPath = this.appParams.home_path + '/tmp_Workspace/';
+      var outputName = 'services_' + Date.now();
+      WorkspaceManager.createFolder(outputPath + outputName).then(function (results) {
+        isCreated = true;
+        Topic.publish('FileNotification', { 'outputPath': outputPath, 'outputName': outputName});
+        
+      }, function (err) {
+        console.log ("in error");
+        //outputName = 'services_' + Date.now();
+      })
     },
 
     onReset: function (evt) {

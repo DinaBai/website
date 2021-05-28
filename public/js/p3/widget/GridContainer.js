@@ -116,6 +116,7 @@ define([
     columns: null,
     enableAnchorButton: false,
     showAutoFilterMessage: true,
+    homePath: WorkspaceManager.getDefaultFolder(),
 
     _setColumnsAttr: function (columns) {
       if (this.grid) {
@@ -1372,12 +1373,25 @@ define([
         },
         function (selection) {
           console.log('in selection');
-          var genome_info = { 'name' : selection[0].genome_name, 'id' : selection[0].genome_id };
-          //var genome_id = selection[0].genome_id;
-          //var genome_name = selection[0].genome_name;
-          //var selectionList = selection.map(function (sel) {
-          //  return { 'name' : sel.genome_name, 'id' : sel.genome_id };
-          //});
+
+          var outputPath = this.homePath + '/tmp_Workspace/';
+
+          var isCreated = false;
+          //while (!isCreated) {
+            //var outputName = 'services_' + Date.now();
+/*             WorkspaceManager.createFolder(this.homePath + '/tmp_Workspace/services_' + Date.now()).then(function (results) {
+              isCreated = true;
+
+              
+            }, function (err) {
+              console.log ("in error");
+              //outputName = 'services_' + Date.now();
+            }) */
+            //WorkspaceManager.createFolder(this.path + values.name).then(function (results) {}
+          //}
+          
+
+          var genome_info = { 'home_path': this.homePath, 'name' : selection[0].genome_name, 'id' : selection[0].genome_id };
 
           popup.open({
             popup: new ServicesTooltipDialog({
@@ -1468,6 +1482,18 @@ define([
         false
       ] */
     ],
+
+    createTmpServicesFolder: function () {
+      var output_path = this.homePath + '/tmp_Workspace';
+      var output_name = 'services_' + Date.now();
+      WorkspaceManager.createFolder(this.output_path + '/' + this.output_name).then(function (results) {
+        return [output_path, output_name];
+      }, function (err) {
+        console.log ("in error");
+        //this.createTmpServicesFolder();
+        //outputName = 'services_' + Date.now();
+      })
+    },
 
     buildQuery: function () {
       var q = [];

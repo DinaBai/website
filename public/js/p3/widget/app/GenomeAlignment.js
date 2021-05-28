@@ -1,10 +1,10 @@
 define([
-  'dojo/_base/declare', 'dojo/on', 'dojo/dom-class',
+  'dojo/_base/declare', 'dojo/on', 'dojo/dom-class', 'dojo/topic',
   'dojo/text!./templates/GenomeAlignment.html', './AppBase', 'dojo/dom-construct', 'dijit/registry',
   'dojo/_base/lang', 'dojo/query', 'dijit/Dialog', 'dojo/dom-style',
   '../../WorkspaceManager', 'dojo/when', 'dojo/request', '../SelectedTable'
 ], function (
-  declare, on, domClass,
+  declare, on, domClass, Topic,
   Template, AppBase, domConstruct, registry,
   lang, query, Dialog, domStyle,
   WorkspaceManager, when, request, SelectedTable
@@ -70,6 +70,16 @@ define([
 
       if (this.appParams) {
         this.addGenome ({name: this.appParams.name, id: this.appParams.id});
+
+        if (this.appParams.home_path) {
+          this.createOutputFolder();
+          Topic.subscribe('FileNotification', function(pathnames) {
+              console.log ("i am here");
+              //document.getElementById('output_path').set('value', pathnames.outputPath);
+              self.output_path.set('value', pathnames.outputPath);
+          });
+          
+        }
       }
 
       this._started = true;
