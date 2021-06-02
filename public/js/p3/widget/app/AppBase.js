@@ -205,9 +205,9 @@ define([
       this._started = true;
     },
 
-    createOutputFolder: function() {
-      var outputPath = this.appParams.home_path + '/tmp_Workspace/';
-      var outputName = 'services_' + Date.now();
+    createOutputFolder: function(serviceName) {
+      var outputPath = this.appParams.home_path + '/services_tmp/' + serviceName + '/';
+      var outputName = 'service_' + Date.now();
       WorkspaceManager.createFolder(outputPath + outputName).then(function (results) {
         isCreated = true;
         Topic.publish('FileNotification', { 'outputPath': outputPath, 'outputName': outputName});

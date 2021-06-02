@@ -72,11 +72,15 @@ define([
         this.addGenome ({name: this.appParams.name, id: this.appParams.id});
 
         if (this.appParams.home_path) {
-          this.createOutputFolder();
+          this.createOutputFolder('genome_alignment');
+          var _self = this;
           Topic.subscribe('FileNotification', function(pathnames) {
               console.log ("i am here");
-              //document.getElementById('output_path').set('value', pathnames.outputPath);
-              self.output_path.set('value', pathnames.outputPath);
+              //var whatever = registry.byId(_self.output_path);
+              //whatever.set('value', pathnames.outputPath);
+              //_self.output_path.set('value', pathnames.OutputPath);
+              _self.output_path.set('placeHolder', pathnames.outputPath);
+              _self.output_file.set('placeHolder', pathnames.outputName);
           });
           
         }
