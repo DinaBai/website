@@ -4,14 +4,14 @@ define([
   'dojo/text!./templates/AppLogin.html', 'dijit/form/Form', 'p3/widget/WorkspaceObjectSelector', 'dojo/topic', 'dojo/_base/lang',
   '../../util/PathJoin', 'dojox/xml/parser',
   'dijit/Dialog', 'dojo/request', 'dojo/dom-construct', 'dojo/query', 'dijit/TooltipDialog', 'dijit/popup', 'dijit/registry', 'dojo/dom',
-  '../../WorkspaceManager'
+  '../../WorkspaceManager', 'dojo/date/stamp'
 ], function (
   declare, WidgetBase, on,
   domClass, Templated, WidgetsInTemplate,
   LoginTemplate, FormMixin, WorkspaceObjectSelector, Topic, lang,
   PathJoin, xmlParser,
   Dialog, xhr, domConstruct, query, TooltipDialog, popup, registry, dom,
-  WorkspaceManager
+  WorkspaceManager, stamp
 ) {
   return declare([WidgetBase, FormMixin, Templated, WidgetsInTemplate], {
     baseClass: 'App Sleep',
@@ -30,6 +30,7 @@ define([
     // srrValidationUrl: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?retmax=1&db=sra&field=accn&term={0}&retmode=json',
     srrValidationUrl: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?retmax=10&db=sra&id={0}', // the data we need is in xml string no matter what.
     appParams: null,
+    countCreateFolderAttempts: 0,
 
     postMixInProperties: function () {
       // use AppLogin.html when requireAuth & user is not logged in
@@ -206,15 +207,24 @@ define([
     },
 
     createOutputFolder: function(serviceName) {
+      _self = this;
       var outputPath = this.appParams.home_path + '/services_tmp/' + serviceName + '/';
-      var outputName = 'service_' + Date.now();
+      var outputName = serviceName + '_' + stamp.toISOString (new Date()) + '_' + Date.now();
+      outputName = outputName.replace (/:/g, '_');
+      outputName = "test1";
       WorkspaceManager.createFolder(outputPath + outputName).then(function (results) {
-        isCreated = true;
         Topic.publish('FileNotification', { 'outputPath': outputPath, 'outputName': outputName});
         
       }, function (err) {
         console.log ("in error");
-        //outputName = 'services_' + Date.now();
+        if (!this.countCreateFolderAttempts) {
+          this.countCreateFolderAttempts = 1;
+        } else {
+          this.countCreateFolderAttempts = this.countCreateFolderAttempts + 1;
+        }
+        if (this.countCreateFolderAttempts <= 10) {
+          _self.createOutputFolder(serviceName);
+        }
       })
     },
 
