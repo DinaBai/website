@@ -4,14 +4,14 @@ define([
   'dojo/text!./templates/AppLogin.html', 'dijit/form/Form', 'p3/widget/WorkspaceObjectSelector', 'dojo/topic', 'dojo/_base/lang',
   '../../util/PathJoin', 'dojox/xml/parser',
   'dijit/Dialog', 'dojo/request', 'dojo/dom-construct', 'dojo/query', 'dijit/TooltipDialog', 'dijit/popup', 'dijit/registry', 'dojo/dom',
-  '../../WorkspaceManager', 'dojo/date/stamp'
+  '../../WorkspaceManager', 'dojo/date/stamp', 'dijit/Dialog'
 ], function (
   declare, WidgetBase, on,
   domClass, Templated, WidgetsInTemplate,
   LoginTemplate, FormMixin, WorkspaceObjectSelector, Topic, lang,
   PathJoin, xmlParser,
   Dialog, xhr, domConstruct, query, TooltipDialog, popup, registry, dom,
-  WorkspaceManager, stamp
+  WorkspaceManager, stamp, Dialog
 ) {
   return declare([WidgetBase, FormMixin, Templated, WidgetsInTemplate], {
     baseClass: 'App Sleep',
@@ -211,7 +211,7 @@ define([
       var outputPath = this.appParams.home_path + '/services_tmp/' + serviceName + '/';
       var outputName = serviceName + '_' + stamp.toISOString (new Date()) + '_' + Date.now();
       outputName = outputName.replace (/:/g, '_');
-      outputName = "test1";
+      //outputName = "test3";   // to test disallowing overwrite
       WorkspaceManager.createFolder(outputPath + outputName).then(function (results) {
         Topic.publish('FileNotification', { 'outputPath': outputPath, 'outputName': outputName});
         
@@ -224,6 +224,14 @@ define([
         }
         if (this.countCreateFolderAttempts <= 10) {
           _self.createOutputFolder(serviceName);
+        }
+        else {
+          var dlg = new Dialog({
+            title: 'Error Creating Results Directory',
+            content: 'Temporary Storage Space Could Not Be Created.'
+          });
+          dlg.startup();
+          dlg.show();
         }
       })
     },

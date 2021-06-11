@@ -75,12 +75,21 @@ define([
           this.createOutputFolder('genome_alignment');
           var _self = this;
           Topic.subscribe('FileNotification', function(pathnames) {
-              console.log ("i am here");
-              //var whatever = registry.byId(_self.output_path);
-              //whatever.set('value', pathnames.outputPath);
-              //_self.output_path.set('value', pathnames.OutputPath);
-              _self.output_path.set('placeHolder', pathnames.outputPath);
-              _self.output_file.set('placeHolder', pathnames.outputName);
+              
+              _self.output_path.set('placeHolder', (pathnames.outputPath).slice(0, -1));
+              //_self.output_path.autoSelectCurrent = true;
+              _self.output_path.set('path', '/DBai@patricbrc.org');
+              _self.output_path.set('selection', {path: _self.output_path.path, name: 'Test'});
+
+              _self.output_path.set('value', (pathnames.outputPath).slice(0, -1));
+              _self.output_path.onSearchChange(pathnames.outputPath);
+              //_self.output_path.set('path', pathnames.outputPath);
+              //AppBase.onOutputPathChange(pathnames.outputPath);
+              //_self.outputPath.set('name', 'Path Test');
+              //_self.output_file.set('placeHolder', pathnames.outputName);
+              _self.output_path.searchBox.set ('value', pathnames.outputPath);
+              _self.output_file.set('value', pathnames.outputName);
+              _self.output_file.set('path', pathnames.outputPath);
           });
           
         }
